@@ -2,6 +2,7 @@ galaxy_info:
   author: Onur Yasarlar
   description: Installs KVM  on supported operating systems
   company: Onur Lab
+  role_name: kvm
 
   license: license MIT
 
