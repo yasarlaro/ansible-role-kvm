@@ -1,0 +1,4 @@
+---
+bridge_name: "br0"
+client_ip: "{{ ansible_default_ipv4.address }}/{{ansible_default_ipv4.netmask }}"
+client_network_cidr: "{{ client_ip | ipaddr('prefix') }}"

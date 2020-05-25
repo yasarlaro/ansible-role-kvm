@@ -18,7 +18,11 @@ Role variables can be found under "vars" directory. Variable files are important
 Dependencies
 ------------
 
-There is no dependency on any other role or module
+The role expects [ipaddr](https://docs.ansible.com/ansible/latest/user_guide/playbooks_filters_ipaddr.html) filter is installed on the source host. Filter can be installed by:
+
+```bash
+pip install netaddr
+```
 
 Example Playbook
 ----------------

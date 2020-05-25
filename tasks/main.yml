@@ -55,3 +55,12 @@
     name: libvirtd
     state: started
     enabled: yes
+
+- name: Configure public bridge network
+  template:
+    src: "{{ item.name }}"
+    dest: "{{ item.dest }}"
+  loop:
+    - { name: ifcfg-br.j2, dest: "/etc/sysconfig/network-scripts/ifcfg-{{ bridge_name }}" }
+    - { name: ifcfg-phy.j2, dest: "/etc/sysconfig/network-scripts/ifcfg-{{ ansible_default_ipv4.interface }}" }
+  notify: restart network
