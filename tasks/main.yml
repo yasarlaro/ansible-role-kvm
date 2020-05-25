@@ -44,7 +44,7 @@
 
 - name: Load libvirt packages from variable file
   include_vars: "{{ ansible_distribution | lower }}{{ ansible_distribution_major_version }}.yml"
- 
+
 - name: Install Libvirt Packages
   yum:
     name: "{{ libvirt_packages }}"
