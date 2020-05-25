@@ -7,7 +7,7 @@
    - ansible_facts['distribution_major_version'] != "7" or ansible_facts['distribution_major_version'] != "8"
 
 - name: Get CPU Virtualization Support
-  shell: 
+  shell:
     cmd: egrep -o '(vmx|svm)' /proc/cpuinfo | sort | uniq | wc -l
   register: cpuinfo_output
 
@@ -17,7 +17,7 @@
   when:
     - cpuinfo_output.stdout != "1"
 
-- name: Install yum-utils 
+- name: Install yum-utils
   yum:
     name: yum-utils
     state: present
@@ -44,7 +44,7 @@
 
 - name: Load libvirt packages from variable file
   include_vars: "{{ ansible_distribution | lower }}{{ ansible_distribution_major_version }}.yml"
-  
+ 
 - name: Install Libvirt Packages
   yum:
     name: "{{ libvirt_packages }}"
