@@ -1,0 +1,21 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: vagrant
+lint: |
+  yamllint .
+  ansible-lint
+platforms:
+  - name: centos8
+    box: centos/8
+    memory: 1024
+    cpu: 1
+  - name: centos7
+    box: centos/7
+    memory: 1024
+    cpu: 1
+provisioner:
+  name: ansible
+verifier:
+  name: ansible
