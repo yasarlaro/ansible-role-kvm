@@ -1,0 +1,34 @@
+---
+- name: Check OS version
+  fail:
+    msg: "OS Version( {{ ansible_distribution }}{{ ansible_distribution_major_version }} ) is not certified for the role"
+  when: ( ansible_distribution != "CentOS" and (ansible_distribution_major_version|int != 7 or ansible_distribution_major_version|int != 8 )) or
+        (ansible_distribution != "Ubuntu" and ( ansible_distribution_major_version|int != 18 or ansible_distribution_major_version|int != 20))
+
+- name: Check CPU Virtualization Support
+  shell:
+    cmd: "egrep -c '(vmx|svm)' /proc/cpuinfo"
+  args:
+    warn: no
+  changed_when: no
+  register: cpuinfo_output
+
+- name: Check CPU Virtualization Support
+  fail:
+    msg: "CPU does not support virtualization"
+  when:
+    - cpuinfo_output.stdout == "0"
+
+- name: Check if your processor is 64-bit
+  shell:
+    cmd: "egrep -c ' lm ' /proc/cpuinfo"
+  args:
+    warn: no
+  changed_when: no
+  register: bitinfo_output
+
+- name: Check if your processor is 64-bit
+  fail:
+    msg: "CPU is not 64-bit"
+  when:
+    - bitinfo_output.stdout == "0"

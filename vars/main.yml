@@ -2,3 +2,40 @@
 bridge_name: "br0"
 client_ip: "{{ ansible_default_ipv4.address }}/{{ansible_default_ipv4.netmask }}"
 client_network_cidr: "{{ client_ip | ipaddr('prefix') }}"
+
+use_libvirt_user: yes
+libvirt_user: "admin"
+libvirt_user_passwd: "passw0rd"
+
+libvirt_packages:
+  centos7:
+    - qemu-kvm
+    - libvirt
+    - libvirt-python
+    - libguestfs-tools
+    - virt-install
+    - virt-top
+    - virt-manager
+  centos8:
+    - '@virt'
+    - libguestfs-tools
+    - virt-top
+    - virt-manager
+  ubuntu16:
+    - qemu-kvm
+    - libvirt-daemon-system
+    - libvirt-bin
+    - bridge-utils
+    - virt-manager
+  ubuntu18:
+    - qemu-kvm
+    - libvirt-daemon-system
+    - libvirt-clients
+    - bridge-utils
+    - virt-manager
+  ubuntu20:
+    - qemu-kvm
+    - libvirt-daemon-system
+    - libvirt-clients
+    - bridge-utils
+    - virt-manager

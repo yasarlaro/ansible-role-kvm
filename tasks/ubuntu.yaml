@@ -1,0 +1,38 @@
+---
+- set_fact:
+    osversion: "{{ ansible_distribution | lower }}{{ ansible_distribution_major_version }}"
+
+- name: Install Libvirt Packages
+  package:
+    name: "{{ libvirt_packages[osversion] }}"
+    state: present
+
+- name: Add libvirt non-root user
+  user:
+    name: "{{ libvirt_user}}"
+    shell: /bin/bash
+    groups: libvirtd,kvm
+    append: yes
+    password: "{{ libvirt_user_passwd | password_hash('sha512') }}"
+    update_password: "on_create"
+  when: 
+    - use_libvirt_user | bool
+    - ansible_distribution_major_version == "16"
+
+- name: Add libvirt non-root user
+  user:
+    name: "{{ libvirt_user}}"
+    shell: /bin/bash
+    groups: libvirt,kvm
+    append: yes
+    password: "{{ libvirt_user_passwd | password_hash('sha512') }}"
+    update_password: "on_create"
+  when: 
+    - use_libvirt_user | bool
+    - ansible_distribution_major_version == "18" or ansible_distribution_major_version == "20"
+
+- name: Enable and start libvirt service
+  service:
+    name: libvirtd
+    state: started
+    enabled: yes

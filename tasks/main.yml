@@ -1,76 +1,11 @@
 ---
-- name: Check OS version
-  fail:
-    msg: "OS Version( {{ ansible_distribution }}{{ ansible_distribution_major_version }} ) is not certified for the role"
-  when:
-   - ansible_facts['distribution'] != "CentOS"
-   - ansible_facts['distribution_major_version'] != "7" or ansible_facts['distribution_major_version'] != "8"
+- name: CPU support checks
+  include_tasks: prereq.yaml
 
-- name: Get CPU Virtualization Support
-  shell:
-    cmd: "lscpu | grep -w 'Virtualization type:' | egrep -w 'AMD-V|VT-x|full' | sort | uniq | wc -l"
-  args:
-    warn: no
-  changed_when: no
-  register: cpuinfo_output
+- name: Install and Configure for CentOS
+  include_tasks: centos.yaml
+  when: ansible_distribution == "CentOS"
 
-- name: Check CPU Virtualization Support
-  fail:
-    msg: "CPU does not support virtualization"
-  when:
-    - cpuinfo_output.stdout != "1"
-
-- name: Root tasks
-  block:
-    - name: Install yum-utils
-      yum:
-        name: yum-utils
-        state: present
-
-    - name: Upgrade system
-      yum:
-        name: '*'
-        state: latest
-
-    - name: Check if reboot is required
-      shell:
-        cmd: /usr/bin/needs-restarting -r
-      args:
-        warn: no
-      changed_when: no
-      ignore_errors: yes
-      register: needs_restarting
-
-    - name: Reboot server if needed
-      reboot:
-        msg: "Reboot initiated by Ansible"
-        connect_timeout: 5
-        reboot_timeout: 600
-        pre_reboot_delay: 0
-        post_reboot_delay: 30
-        test_command: whoami
-      when: needs_restarting.rc == 1
-
-    - name: Load libvirt packages from variable file
-      include_vars: "{{ ansible_distribution | lower }}{{ ansible_distribution_major_version }}.yml"
-
-    - name: Install Libvirt Packages
-      yum:
-        name: "{{ libvirt_packages }}"
-        state: present
-
-    - name: Enable and start libvirt service
-      service:
-        name: libvirtd
-        state: started
-        enabled: yes
-
-    - name: Configure public bridge network
-      template:
-        src: "{{ item.name }}"
-        dest: "{{ item.dest }}"
-      loop:
-        - { name: ifcfg-br.j2, dest: "/etc/sysconfig/network-scripts/ifcfg-{{ bridge_name }}" }
-        - { name: ifcfg-phy.j2, dest: "/etc/sysconfig/network-scripts/ifcfg-{{ ansible_default_ipv4.interface }}" }
-      notify: restart network
-  become: true
+- name: Install and Configure for Ubuntu
+  include_tasks: ubuntu.yaml
+  when: ansible_distribution == "Ubuntu"
