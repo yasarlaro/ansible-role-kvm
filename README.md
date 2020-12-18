@@ -9,20 +9,18 @@ Requirements
 Server has to support CPU virtualization and has be one of the below operating systems:
  - CentOS 7
  - CentOS 8
+ - Ubuntu 18.x
+ - Ubuntu 20.x
 
 Role Variables
 --------------
 
-Role variables can be found under "vars" directory. Variable files are importanted based on the operationg system.
+Role variables can be found under `vars` directory. Variable files are importanted based on the operationg system. If you would like to use a non-root user as the virtualization administrator, please take a look `vars/main.yaml` file and change it if needed.
 
 Dependencies
 ------------
 
-The role expects [ipaddr](https://docs.ansible.com/ansible/latest/user_guide/playbooks_filters_ipaddr.html) filter is installed on the source host. Filter can be installed by:
-
-```bash
-pip install netaddr
-```
+There is no dependency for this tole
 
 Example Playbook
 ----------------
