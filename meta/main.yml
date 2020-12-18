@@ -13,11 +13,17 @@ galaxy_info:
     versions:
     - 7
     - 8
+  - name: Ubuntu
+    versions:
+    - bionic
+    - focal
 
   galaxy_tags:
     - kvm
     - libvirt
     - centos7
     - centos8
+    - ubuntu1804
+    - ubuntu2004
 
 dependencies: []

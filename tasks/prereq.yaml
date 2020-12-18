@@ -1,9 +1,16 @@
 ---
+- name: Setting OS version fact
+  set_fact:
+    osversion: "{{ ansible_distribution | lower }}{{ ansible_distribution_major_version }}"
+
 - name: Check OS version
   fail:
     msg: "OS Version( {{ ansible_distribution }}{{ ansible_distribution_major_version }} ) is not certified for the role"
-  when: ( ansible_distribution != "CentOS" and (ansible_distribution_major_version|int != 7 or ansible_distribution_major_version|int != 8 )) or
-        (ansible_distribution != "Ubuntu" and ( ansible_distribution_major_version|int != 18 or ansible_distribution_major_version|int != 20))
+  when:
+    - osversion != "ubuntu20"
+    - osversion != "ubuntu18"
+    - osversion != "centos7"
+    - osversion != "centos8"
 
 - name: Check CPU Virtualization Support
   shell:
