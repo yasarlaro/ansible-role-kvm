@@ -15,7 +15,7 @@ Server has to support CPU virtualization and has be one of the below operating s
 Role Variables
 --------------
 
-Role variables can be found under `vars` directory. Variable files are importanted based on the operationg system. If you would like to use a non-root user as the virtualization administrator, please take a look `vars/main.yaml` file and change it if needed.
+Role variables can be found under `vars` directory. Variable files are importanted based on the operationg system. If you would like to use a non-root user as the virtualization administrator, please take a look `vars/main.yml` file and change it if needed.
 
 Dependencies
 ------------
