@@ -19,6 +19,7 @@
     warn: no
   changed_when: no
   register: cpuinfo_output
+  tags: ['skip_ansible_lint']
 
 - name: Check CPU Virtualization Support
   fail:
@@ -33,6 +34,7 @@
     warn: no
   changed_when: no
   register: bitinfo_output
+  tags: ['skip_ansible_lint']
 
 - name: Check if your processor is 64-bit
   fail:

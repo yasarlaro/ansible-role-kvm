@@ -11,6 +11,7 @@
   yum:
     name: '*'
     state: latest
+  tags: ['skip_ansible_lint']
 
 - name: Check if reboot is required
   shell:
@@ -20,6 +21,7 @@
   changed_when: no
   ignore_errors: yes
   register: needs_restarting
+  tags: ['skip_ansible_lint']
 
 - name: Reboot server if needed
   reboot:
