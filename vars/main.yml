@@ -17,12 +17,6 @@ libvirt_packages:
     - libguestfs-tools
     - virt-top
     - virt-manager
-  ubuntu16:
-    - qemu-kvm
-    - libvirt-daemon-system
-    - libvirt-bin
-    - bridge-utils
-    - virt-manager
   ubuntu18:
     - qemu-kvm
     - libvirt-daemon-system
